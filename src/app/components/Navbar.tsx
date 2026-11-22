@@ -125,7 +125,7 @@ const Navbar = () => {
                   <Link href="/sign-in">সাইন ইন</Link>
                 </Button>
 
-                <Button variant="primary">
+                <Button className={"bg-[#05893F] rounded-xl"}>
                   <Link href="/sign-up">সাইন আপ</Link>
                 </Button>
               </div>
