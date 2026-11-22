@@ -31,9 +31,14 @@ const Navbar = () => {
     };
     fetchCategories();
   }, []);
-  const { data, isPending } = useSession();
+  const { data: session, isPending } = useSession();
+
   const handleSignOut = async () => {
-    await signOut();
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Sign out failed:", error);
+    }
   };
   return (
     <header className="w-full bg-white border-b border-slate-200/80 sticky top-0 z-50">
@@ -78,53 +83,50 @@ const Navbar = () => {
                   <ProgressCircle.FillCircle />
                 </ProgressCircle.Track>
               </ProgressCircle>
-            ) : data?.user.name ? (
+            ) : session?.user ? (
               <Dropdown>
-                <Button isIconOnly aria-label="Menu" variant="secondary">
+                <Button isIconOnly aria-label="User Menu" variant="secondary">
                   <Avatar>
                     <Avatar.Image
-                      alt={data?.user.name ?? "User Profile"}
-                      src={data?.user.image ?? "/images/default-avatar.png"}
+                      alt={session.user.name ?? "User Profile"}
+                      src={session.user.image ?? "/images/default-avatar.png"}
                     />
-                    <Avatar.Fallback>JD</Avatar.Fallback>
+                    <Avatar.Fallback>
+                      {session.user.name?.charAt(0).toUpperCase() ?? "U"}
+                    </Avatar.Fallback>
                   </Avatar>
                 </Button>
+
                 <Dropdown.Popover>
-                  <Dropdown.Menu
-                    onAction={(key) => console.log(`Selected: ${key}`)}
-                  >
-                    <Dropdown.Item id="new-file" textValue="New file">
-                      <Link href={"/profile"}>প্রোফাইল</Link>
-                    </Dropdown.Item>
-                    <Dropdown.Item>
-                      <Link href={"/profile/update-profile"}>
-                        {" "}
-                        আপডেট প্রোফাইল
-                      </Link>
+                  <Dropdown.Menu>
+                    <Dropdown.Item id="profile">
+                      <Link href="/profile">প্রোফাইল</Link>
                     </Dropdown.Item>
 
-                    <Dropdown.Item>
-                      <Button onClick={handleSignOut}>সাইন আউট</Button>
+                    <Dropdown.Item id="update-profile">
+                      <Link href="/profile/update-profile">আপডেট প্রোফাইল</Link>
+                    </Dropdown.Item>
+
+                    <Dropdown.Item id="sign-out">
+                      <button
+                        type="button"
+                        onClick={handleSignOut}
+                        className="w-full text-left"
+                      >
+                        সাইন আউট
+                      </button>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown.Popover>
               </Dropdown>
             ) : (
-              <div>
-                <Button
-                  type="button"
-                  variant="ghost"
-                  className="h-9 px-3 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 hover:text-[#0d6efd] hover:bg-slate-50 transition-colors"
-                >
-                  <Link href={"/sign-in"}>সাইন ইন</Link>
+              <div className="flex items-center gap-2">
+                <Button variant="ghost">
+                  <Link href="/sign-in">সাইন ইন</Link>
                 </Button>
 
-                <Button
-                  type="button"
-                  variant="primary"
-                  className="h-9 sm:h-10 px-4 sm:px-5 rounded-xl bg-[#0d6efd] hover:bg-blue-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition-colors"
-                >
-                  <Link href={"/sign-up"}>সাইন আপ</Link>
+                <Button variant="primary">
+                  <Link href="/sign-up">সাইন আপ</Link>
                 </Button>
               </div>
             )}

@@ -1,33 +1,21 @@
 import { auth } from "@/lib/auth";
-import { Label, ProgressCircle } from "@heroui/react";
 import { headers } from "next/headers";
-import Image from "next/image";
-import Link from "next/link";
 import {
-  HiOutlineUser,
   HiOutlineMail,
-  HiOutlineLogout,
   HiOutlinePencilAlt,
   HiOutlineShieldCheck,
   HiOutlineArrowLeft,
 } from "react-icons/hi";
+import React from "react";
+import Image from "next/image";
+import Link from "next/link";
 
 const ProfilePage = async () => {
-  const { user, isPending } = await auth.api.getSession({
+  const session = await auth.api.getSession({
     headers: await headers(), // you need to pass the headers object.
   });
-
-  if (isPending) {
-    <div className="flex items-center gap-3">
-      <ProgressCircle aria-label="Loading" value={100}>
-        <ProgressCircle.Track>
-          <ProgressCircle.TrackCircle />
-          <ProgressCircle.FillCircle />
-        </ProgressCircle.Track>
-      </ProgressCircle>
-      <Label>100% Complete</Label>
-    </div>;
-  }
+  const user = session?.user;
+  if (!user) return null;
   return (
     <main className="max-w-2xl mx-auto px-4 sm:px-6 py-10 sm:py-16 space-y-8">
       {/* Back button */}
