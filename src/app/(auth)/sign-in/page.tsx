@@ -13,7 +13,6 @@ import {
 } from "@heroui/react";
 import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import Link from "next/link";
-// import { signIn } from "@/lib/auth-client";
 import { signIn } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
@@ -26,9 +25,9 @@ export default function SignInPage() {
     const data = Object.fromEntries(formData);
     console.log("Form Data:", data);
     const { data: resData, error } = await signIn.email({
-      email: data.email as string, // required, The email address of the user.
-      password: data.password as string, // required, The password of the user. It should be at least 8 characters long and max 128 by default.
-      callbackURL: "/", // An optional URL to redirect to after the user signs in. (optional)
+      email: data.email as string, 
+      password: data.password as string, 
+      callbackURL: "/", 
     });
     if (error) {
       toast.error(error.message as string);
@@ -53,9 +52,6 @@ export default function SignInPage() {
       <Card className="w-full max-w-[420px] p-5 sm:p-7 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 bg-white">
         {/* Header Section */}
         <Card.Header className="flex flex-col items-center text-center gap-1.5 pb-2">
-          <span className="text-4xl mb-1" role="img" aria-label="bus">
-            🚌
-          </span>
           <Card.Title className="text-2xl sm:text-3xl font-bold text-slate-900">
             সাইন ইন
           </Card.Title>
@@ -64,7 +60,6 @@ export default function SignInPage() {
           </Card.Description>
         </Card.Header>
 
-        {/* Main Form & Social Section */}
         <Card.Content className="flex flex-col gap-5 pt-2">
           <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
             {/* Email Field */}
@@ -90,7 +85,6 @@ export default function SignInPage() {
               <FieldError className="text-xs text-red-500" />
             </TextField>
 
-            {/* Password Field */}
             <TextField
               name="password"
               type={isVisible ? "text" : "password"}
@@ -121,7 +115,6 @@ export default function SignInPage() {
               <FieldError className="text-xs text-red-500" />
             </TextField>
 
-            {/* Submit Button */}
             <Button
               type="submit"
               variant="primary"
@@ -131,13 +124,11 @@ export default function SignInPage() {
             </Button>
           </Form>
 
-          {/* Separator with "অথবা" */}
           <div className="w-full flex items-center gap-3">
             <Separator className="flex-1 bg-slate-100" />
             <span className="text-xs text-slate-400 font-medium">অথবা</span>
           </div>
 
-          {/* Google Login Button */}
           <div className="flex items center justify-center gap-2">
             <Button
               type="button"
@@ -190,7 +181,6 @@ export default function SignInPage() {
 
         <Separator className="w-full bg-slate-100 my-4" />
 
-        {/* Footer Section */}
         <Card.Footer className="flex flex-col items-center gap-2.5 pt-0 text-xs sm:text-sm">
           <p className="text-slate-500">
             নতুন ব্যবহারকারী?{" "}

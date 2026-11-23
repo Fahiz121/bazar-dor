@@ -34,13 +34,12 @@ export default function SignUpPage() {
       return;
     }
 
-    // console.log("Sign Up Data:", data);
     const { data: resData, error } = await signUp.email({
-      email: data.email as string, // user email address
-      password: data.password as string, // user password -> min 8 characters by default
-      name: data.name as string, // user display name
+      email: data.email as string, 
+      password: data.password as string, 
+      name: data.name as string, 
     });
-    // console.log(resData, error);
+
     if (resData?.user.name) {
       toast.success("Account Created Successfully, Login to continue");
       router.push("/signin");
@@ -51,20 +50,17 @@ export default function SignUpPage() {
     const data = await signIn.social({
       provider: "google",
     });
-    console.log(data);
   };
 
   const handleGithubSignIn = async () => {
     const data = await signIn.social({
       provider: "github",
     });
-    console.log(data);
   };
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-[#f8fafc] p-4">
       <Card className="w-full max-w-[440px] p-5 sm:p-7 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 bg-white">
-        {/* Header Section */}
         <Card.Header className="flex flex-col items-center text-center gap-1.5 pb-2">
           <Card.Title className="text-2xl sm:text-3xl font-bold text-slate-900">
             অ্যাকাউন্ট তৈরি করুন
@@ -74,10 +70,8 @@ export default function SignUpPage() {
           </Card.Description>
         </Card.Header>
 
-        {/* Form & Social Section */}
         <Card.Content className="flex flex-col gap-5 pt-2">
           <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            {/* Full Name Field */}
             <TextField
               name="name"
               type="text"
@@ -100,7 +94,6 @@ export default function SignUpPage() {
               <FieldError className="text-xs text-red-500" />
             </TextField>
 
-            {/* Email Field */}
             <TextField
               name="email"
               type="email"
@@ -123,7 +116,6 @@ export default function SignUpPage() {
               <FieldError className="text-xs text-red-500" />
             </TextField>
 
-            {/* Password Field */}
             <TextField
               name="password"
               type={isVisible ? "text" : "password"}
@@ -155,7 +147,6 @@ export default function SignUpPage() {
               <FieldError className="text-xs text-red-500" />
             </TextField>
 
-            {/* Confirm Password Field */}
             <TextField
               name="confirmPassword"
               type={isVisible ? "text" : "password"}
@@ -183,7 +174,6 @@ export default function SignUpPage() {
               )}
             </TextField>
 
-            {/* Register Submit Button */}
             <Button
               type="submit"
               variant="primary"
@@ -193,13 +183,11 @@ export default function SignUpPage() {
             </Button>
           </Form>
 
-          {/* Separator with "অথবা" */}
           <div className="w-full flex items-center gap-3">
             <Separator className="flex-1 bg-slate-100" />
             <span className="text-xs text-slate-400 font-medium">অথবা</span>
           </div>
 
-          {/* Google Sign Up Button */}
           <div className="flex items-center justify-center gap-2">
             <Button
               type="button"
@@ -252,7 +240,6 @@ export default function SignUpPage() {
 
         <Separator className="w-full bg-slate-100 my-4" />
 
-        {/* Footer Section */}
         <Card.Footer className="flex flex-col items-center gap-2.5 pt-0 text-xs sm:text-sm">
           <p className="text-slate-500">
             ইতিমধ্যে অ্যাকাউন্ট আছে?{" "}

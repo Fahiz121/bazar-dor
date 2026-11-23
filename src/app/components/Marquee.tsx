@@ -1,101 +1,92 @@
+"use client";
 
-import { Chip } from "@heroui/react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import MarqueeText from "react-marquee-text";
-
-interface Category {
-  id: number;
-  slug: string;
-  nameBn: string;
-  categoryIcon: string;
-  unit: string;
-  today: number;
-  change: {
-    dir: "up" | "down";
-    pct: number;
-  };
-}
+import Marquee from "react-fast-marquee";
+import { IProduct } from "@/types/type";
+import { Separator } from "@heroui/react";
 
 const unitBn: Record<string, string> = {
   kg: "কেজি",
   liter: "লিটার",
-  piece: "পিস",
+  piece: "টি",
   dozen: "ডজন",
 };
 
-const bnNumber = (value: number) =>
-  new Intl.NumberFormat("bn-BD").format(value);
+const PriceMarquee = () => {
+  const [products, setProducts] = useState<IProduct[]>([]);
+  const [loading, setLoading] = useState(true);
 
-async function getCategories(): Promise<Category[]> {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/categories`,
-      { next: { revalidate: 300 } }
-    );
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`);
 
-    if (!response.ok) return [];
+        if (!res.ok) {
+          throw new Error("Failed to fetch products");
+        }
 
-    const result = await response.json();
+        const result = await res.json();
 
-    return Array.isArray(result)
-      ? result
-      : result.data ?? [];
-  } catch (error) {
-    console.error("Category fetch error:", error);
-    return [];
+        // API response যদি সরাসরি array হয়
+        const data = Array.isArray(result) ? result : result.data;
+
+        setProducts(data ?? []);
+      } catch (error) {
+        console.error("Product fetching error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+
+    const interval = setInterval(fetchProducts, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  if (loading) {
+    return null;
   }
-}
 
-const Marquee = async () => {
-  const categories = await getCategories();
-
-  if (!categories.length) return null;
+  if (!products.length) {
+    return null;
+  }
 
   return (
-    <div className="w-full overflow-hidden border-y border-default-200 bg-default-50 py-2">
-      <MarqueeText pauseOnHover>
-        <div className="flex w-max items-center gap-8 px-4">
-          {categories.map((category) => {
-            const isUp = category.change?.dir === "up";
+    <div className="bg-white text-black py-3">
+      <Marquee speed={45} pauseOnHover gradient={false}>
+        {products.map((product) => {
+          const isUp = product.change.dir === "up";
 
-            return (
-              <Link
-                key={category.id}
-                href={`/products/${category.slug}`}
-                className="flex shrink-0 items-center gap-2 text-sm transition-opacity hover:opacity-70"
-              >
-                <span className="text-lg">
-                  {category.categoryIcon}
-                </span>
+          return (
+            <Link
+              key={product.id}
+              href={`/products/${product.slug}`}
+              className="flex items-center gap-2 px-6 whitespace-nowrap"
+            >
+              <span>{product.image}</span>
 
-                <span className="font-semibold whitespace-nowrap">
-                  {category.nameBn}
-                </span>
+              <span>{product.nameBn}</span>
 
-                <span className="whitespace-nowrap text-default-600">
-                  দাম
-                </span>
+              <span className="font-semibold">
+                ৳{product.today.toLocaleString("en-IN")}
+              </span>
 
-                <span className="font-bold whitespace-nowrap">
-                  ৳{bnNumber(category.today ?? 0)}/
-                  {unitBn[category.unit] || category.unit}
-                </span>
+              <span>/ {unitBn[product.unit] ?? product.unit}</span>
 
-                <Chip
-                  size="sm"
-                  color={isUp ? "success" : "danger"}
-                  className="font-semibold"
-                >
-                  {isUp ? "▲" : "▼"}{" "}
-                  {bnNumber(category.change?.pct ?? 0)}%
-                </Chip>
-              </Link>
-            );
-          })}
-        </div>
-      </MarqueeText>
+              <span className={isUp ? "text-green-400" : "text-red-400"}>
+                {isUp ? "▲" : "▼"}
+                {product.change.pct}%
+              </span>
+            </Link>
+          );
+        })}
+      </Marquee>
+      <Separator className="w-full bg-slate-200" />
     </div>
   );
 };
 
-export default Marquee;
+export default PriceMarquee;

@@ -10,8 +10,7 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
-import { router } from "better-auth/api";
-import { ArrowLeft, Mail, User, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, Mail, User, Check } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -37,7 +36,6 @@ const UpdateProfilePage = () => {
   return (
     <div className="min-h-screen w-full flex flex-col items-center justify-center bg-[#f8fafc] px-4 py-12">
       <div className="w-full max-w-115 flex flex-col items-center">
-        {/* Top Back Link */}
         <div className="w-full flex justify-start mb-6">
           <Link
             href="/profile"
@@ -48,7 +46,6 @@ const UpdateProfilePage = () => {
           </Link>
         </div>
 
-        {/* Page Heading */}
         <div className="text-center mb-7">
           <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900">
             তথ্য পরিবর্তন
@@ -58,11 +55,9 @@ const UpdateProfilePage = () => {
           </p>
         </div>
 
-        {/* Main Form Card */}
         <Card className="w-full p-6 sm:p-8 rounded-3xl bg-white border border-slate-100 shadow-[0_10px_35px_rgba(15,23,42,0.04)]">
           <Card.Content className="p-0">
             <Form onSubmit={handleSubmit} className="flex flex-col gap-5">
-              {/* Email Field (Read-Only / Disabled) */}
               <TextField
                 name="email"
                 type="email"
@@ -88,7 +83,6 @@ const UpdateProfilePage = () => {
                 </div>
               </TextField>
 
-              {/* Full Name Field */}
               <TextField
                 key={session?.user?.name || "user-name"}
                 name="name"
@@ -116,18 +110,15 @@ const UpdateProfilePage = () => {
                 <FieldError className="text-xs text-red-500" />
               </TextField>
 
-              {/* Status Messages */}
-
-              {/* Submit Button */}
               <Button
                 type="submit"
                 variant="primary"
                 isDisabled={isPending}
-                className="w-full h-11 mt-1 rounded-xl bg-[#0d6efd] hover:bg-blue-700 disabled:opacity-60 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer"
+                className="w-full h-11 mt-1 rounded-xl bg-[#05893F] hover:bg-blue-700 disabled:opacity-60 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-sm transition-colors cursor-pointer"
               >
                 <>
                   <Check size={17} strokeWidth={2.5} />
-                  <span>তথ্য আপডেট করুন</span>
+                  <span>আপডেট</span>
                 </>
               </Button>
             </Form>
