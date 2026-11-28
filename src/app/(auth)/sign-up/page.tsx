@@ -42,7 +42,7 @@ export default function SignUpPage() {
 
     if (resData?.user.name) {
       toast.success("Account Created Successfully, Login to continue");
-      router.push("/sign-in");
+      router.push("/");
     }
   };
 
