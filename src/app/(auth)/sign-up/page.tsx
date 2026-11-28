@@ -42,7 +42,7 @@ export default function SignUpPage() {
 
     if (resData?.user.name) {
       toast.success("Account Created Successfully, Login to continue");
-      router.push("/signin");
+      router.push("/sign-in");
     }
   };
 
@@ -244,7 +244,7 @@ export default function SignUpPage() {
           <p className="text-slate-500">
             ইতিমধ্যে অ্যাকাউন্ট আছে?{" "}
             <Link
-              href="/signin"
+              href="/sign-in"
               className="text-[#05893F] font-semibold hover:underline"
             >
               সাইন ইন করুন

@@ -185,7 +185,7 @@ export default function SignInPage() {
           <p className="text-slate-500">
             নতুন ব্যবহারকারী?{" "}
             <Link
-              href="/signup"
+              href="/sign-up"
               className="text-[#05893F] font-semibold hover:underline"
             >
               অ্যাকাউন্ট তৈরি করুন
